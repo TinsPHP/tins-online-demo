@@ -78,7 +78,6 @@ public class Worker implements IWorker  {
             compiler.compile();
             try {
                 compilerLatch.await();
-                compiler.shutdown();
                 if (!compiler.hasFound(EnumSet.of(EIssueSeverity.FatalError, EIssueSeverity.Error))) {
                     Map<String, String> translations = compiler.getTranslations();
                     String tsphpOutput = translations.get(HardCodedTSPHPTranslatorInitialiser.class.getCanonicalName() + "_web");
