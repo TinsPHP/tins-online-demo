@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  This file is part of the TinsPHP project published under the Apache License 2.0
+  For the full copyright and license information, please have a look at LICENSE in the
+  root folder or visit the project's website http://tsphp.ch/wiki/display/TINS/License
+  -->
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         metadata-complete="true">
+    <servlet>
+        <servlet-name>demo</servlet-name>
+        <servlet-class>ch.tsphp.tinsphp.onlinedemo.Main</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>demo</servlet-name>
+        <url-pattern>/compile</url-pattern>
+    </servlet-mapping>
+</web-app>

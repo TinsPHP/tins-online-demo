@@ -1,0 +1,74 @@
+<!--
+  This file is part of the TinsPHP project published under the Apache License 2.0
+  For the full copyright and license information, please have a look at LICENSE in the
+  root folder or visit the project's website http://tsphp.ch/wiki/display/TINS/License
+  -->
+
+<project name="tins-online-demo" basedir="./" default="build">
+
+    <!-- additional jar for libset, should not be deployed though -->
+    <property name="libset.addon" location="${basedir}/lib/dev/servlet-api.jar"/>
+
+    <import file="${basedir}/ant/build-common.xml" as="common"/>
+    <import file="${basedir}/ant/copyCommon.xml" as="cp"/>
+    <import file="${basedir}/ant/copyParserTypeCheckerTranslator.xml" as="cp"/>
+
+    <import file="${basedir}/ant/personal-settings.xml" as="p" optional="true"/>
+    <property file="${basedir}/ant/build.properties"/>
+    <property name="rsrc" location="${basedir}/rsrc"/>
+
+    <property name="compiler.jar" location="${basedir}/../tsphp/build/lib"/>
+
+
+    <!-- ================================================================== -->
+    <!-- Specialised Target: jar - create a war instead of a jar-->
+    <!-- ================================================================== -->
+    <target name="jar" depends="compile" description="create war">
+        <mkdir dir="${target}/lib"/>
+        <war destfile="${target}/lib/${ant.project.name}.war" webxml="${rsrc}/web.xml">
+            <fileset dir="${src.main}"/>
+            <fileset dir="${rsrc}"/>
+            <lib dir="${lib}">
+                <exclude name="dev/"/>
+            </lib>
+            <classes dir="${classes}"/>
+        </war>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Specialised Target: dist.bin -->
+    <!-- ================================================================== -->
+    <target name="dist.bin">
+        <zip destfile="${target}/dist/${distname}-bin.zip">
+            <zipfileset dir="${basedir}" prefix="${distname}">
+                <include name="README.md"/>
+                <include name="LICENSE"/>
+            </zipfileset>
+            <zipfileset file="${target}/lib/${ant.project.name}.war"/>
+            <zipfileset dir="${javadoc}" prefix="${distname}/doc">
+                <include name="**/*.*"/>
+            </zipfileset>
+        </zip>
+    </target>
+
+    <target name="deploy" depends="clean, jar, clean.deploy">
+        <copy file="${target}/lib/${ant.project.name}.war" tofile="${webRoot}/${ant.project.name}.war"/>
+    </target>
+
+    <target name="clean.deploy" description="clean up">
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${webRoot}\${ant.project.name}"/>
+            <fileset file="${webRoot}\${ant.project.name}.war"/>
+        </delete>
+    </target>
+
+    <target name="cp.all"
+            depends="cp.compiler, cp.translator, cp.typechecker, cp.parser, cp.common"
+            description="copy common, parser and typechecker to the lib folder">
+    </target>
+
+    <target name="cp.compiler" description="copies the compiler component to the lib folder">
+        <copyComponent dir="${compiler.jar}" includes="TSPHP-*.jar"/>
+    </target>
+
+</project>

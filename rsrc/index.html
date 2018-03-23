@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  This file is part of the TinsPHP project published under the Apache License 2.0
+  For the full copyright and license information, please have a look at LICENSE in the
+  root folder or visit the project's website http://tsphp.ch/wiki/display/TINS/License
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <title>TinsPHP Online Demo</title>
+    <link rel="stylesheet" type="text/css" href="jquery.splitter.css"/>
+    <link rel="stylesheet" type="text/css" href="jquery-linedtextarea.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css?v2"/>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.splitter-0.8.0.js"></script>
+    <script type="text/javascript" src="jquery-linedtextarea.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+    <script type="text/javascript" src="examples.js?v2"></script>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<form method="post" id="frm" action="compile">
+    <table class="tbl">
+        <tr><td style="height:10%">
+            <h1>TinsPHP Online Demo</h1>
+            <div id="notice">
+                Write your <b>PHP code</b> in the text area on the <b>left</b> hand side and <b>click</b> on <b>"compile"</b> or <b>press CTRL+G</b>.
+                You will see TSPHP Code as well as PHP augmented with the inferred types on the rigt hand side.
+            </div>
+            <div id="sub">
+                <input type="submit" value="compile" style="margin-right:30px;"/>
+                Show example about:
+                <select id="example">
+                    <option value="0">--</option>
+                    <option value="1">Addition</option>
+                    <option value="2" selected="selected">Kinds of Polymorphism</option>
+                    <option value="3">Recursion</option>
+                    <option value="4">Runtime Checks</option>
+                    <option value="5">Lot of Parameters</option>
+                    <option value="6">Double definition</option>
+                    <option value="7">Undefined variables</option>
+                </select>
+            </div>
+        </td></tr>
+        <tr><td style="height:85%">
+            <div id="horizontal">
+                <div id="vertical">
+                    <div class="container">
+                        <span class="title">PHP</span>
+                        <textarea id="php" name="php" rows="5" cols="5"><?php
+
+?></textarea>
+                    </div>
+                    <div id="output">
+                        <div class="container">
+                            <span class="title">TSPHP</span>
+                            <textarea id="tsphp" name="tsphp" rows="5" cols="5" readonly="readonly" wrap="off"></textarea>
+                        </div>
+                        <div class="container">
+                            <span class="title">PHP + inferred types</span>
+                            <textarea id="phpPlus" name="phpPlus" rows="5" cols="5" readonly="readonly" wrap="off"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <span class="title">Console</span>
+                    <textarea id="console" name="console" rows="10" cols="10" readonly="readonly" wrap="off"></textarea>
+                </div>
+            </div>
+
+        </td></tr>
+        <tr><td style="height:5%">
+        <div id="privacy">* Your entered data might be stored anonymised and analysed later on in order to improve TinsPHP</div>
+        </td></tr>
+    </table>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function($) {
+    $('#horizontal').split({orientation:'horizontal', limit:100, position:'65%'});
+    $('#vertical').split({orientation:'vertical', limit:150, position:'30%'});
+    $('#output').split({orientation:'vertical', limit:150, position:'50%'});
+   
+    var demo = tinsPhpDemo();
+    $('#frm').submit(function(){
+        return demo.compile();
+    });
+    $('#php').linedtextarea();
+    
+    $('#horizontal').bind('splitter.resize', function(e){
+        $('.lines').height( $('#php').height() + 6 );
+    });
+    
+    examples().show(2);
+});
+//]]>
+</script>
+</body>
+</html>
